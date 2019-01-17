@@ -8,11 +8,12 @@ app.use(bodyParser.urlencoded({
 }))
 app.set('view engine', 'ejs')
 
-mongoose.connect('mongodb://localhost/yelp_camp', { useNewUrlParser: true })
+mongoose.connect('mongodb://localhost:27017/yelp_camp', { useNewUrlParser: true })
 
 const campgroundSchema = new mongoose.Schema({
   name: String,
-  image: String
+  image: String,
+  description: String
 })
 const Campground = mongoose.model('Campground', campgroundSchema)
 
@@ -25,7 +26,7 @@ app.get('/campgrounds', (req, res) => {
     if (err) {
       console.log(err)
     } else {
-      res.render('campgrounds', {
+      res.render('index', {
         campgrounds: items
       })
     }
@@ -35,7 +36,8 @@ app.get('/campgrounds', (req, res) => {
 app.post('/campgrounds', (req, res) => {
   let name = req.body.name
   let image = req.body.image
-  let newCampground = { name: name, image: image }
+  let desc = req.body.description
+  let newCampground = { name: name, image: image, description: desc }
 
   Campground.create(newCampground, (err, item) => {
     if (err) {
@@ -50,6 +52,18 @@ app.get('/campgrounds/new', (req, res) => {
   res.render('new')
 })
 
+app.get('/campgrounds/:id', (req, res) => {
+  Campground.findById(req.params.id, (err, item) => {
+    if (err) {
+      console.log(err)
+    } else {
+      res.render('show', {
+        campground: item
+      })
+    }
+  })
+})
+
 app.listen('3000', () => {
-  console.log('Server is listening at localhost:3000')
+  console.log('Server is running at localhost:3000')
 })
