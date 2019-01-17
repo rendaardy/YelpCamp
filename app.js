@@ -16,19 +16,6 @@ const campgroundSchema = new mongoose.Schema({
 })
 const Campground = mongoose.model('Campground', campgroundSchema)
 
-// Campground.create(
-//   {
-//     name: 'Mountain Goat\'s Rest',
-//     image: 'https://farm3.staticflickr.com/2116/2164766085_0229ac3f08.jpg'
-//   }, (err, item) => {
-//     if (err) {
-//       console.log(err)
-//     } else {
-//       console.log(item)
-//     }
-//   }
-// )
-
 app.get('/', (req, res) => {
   res.render('landing')
 })
