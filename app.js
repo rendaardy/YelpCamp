@@ -5,12 +5,15 @@ const mongoose = require('mongoose')
 
 const Campground = require('./models/campground')
 
+const seedDB = require('./seeds')
+
 app.use(bodyParser.urlencoded({
   extended: true
 }))
 app.set('view engine', 'ejs')
-
 mongoose.connect('mongodb://localhost:27017/yelp_camp', { useNewUrlParser: true })
+
+seedDB()
 
 app.get('/', (req, res) => {
   res.render('landing')
@@ -48,12 +51,12 @@ app.get('/campgrounds/new', (req, res) => {
 })
 
 app.get('/campgrounds/:id', (req, res) => {
-  Campground.findById(req.params.id, (err, item) => {
+  Campground.findById(req.params.id).populate('comments').exec((err, foundCampgrounds) => {
     if (err) {
       console.log(err)
     } else {
       res.render('show', {
-        campground: item
+        campground: foundCampgrounds
       })
     }
   })
