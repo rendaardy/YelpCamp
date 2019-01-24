@@ -7,7 +7,7 @@ const LocalStrategy = require('passport-local')
 
 const User = require('./models/user')
 
-const seedDB = require('./seeds')
+// const seedDB = require('./seeds')
 
 const indexRoute = require('./routes/index')
 const campgroundRoute = require('./routes/campgrounds')
@@ -42,7 +42,7 @@ passport.deserializeUser(User.deserializeUser())
 
 mongoose.connect('mongodb://localhost:27017/yelp_camp', { useNewUrlParser: true })
 
-seedDB()
+// seedDB()
 
 app.use('/', indexRoute)
 app.use('/campgrounds', campgroundRoute)
