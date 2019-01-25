@@ -51,6 +51,37 @@ router.get('/:id', (req, res) => {
   })
 })
 
+router.get('/:id/edit', (req, res) => {
+  Campground.findById(req.params.id, (err, foundCampground) => {
+    if (err) {
+      console.log(err)
+      res.redirect('/campgrounds')
+    } else {
+      res.render('campgrounds/edit', { campground: foundCampground })
+    }
+  })
+})
+
+router.put('/:id', (req, res) => {
+  Campground.updateOne({ _id: req.params.id }, req.body.campground, (err, updatedCampground) => {
+    if (err) {
+      res.redirect('/campgrounds')
+    } else {
+      res.redirect(`/campgrounds/${req.params.id}`)
+    }
+  })
+})
+
+router.delete('/:id', (req, res) => {
+  Campground.deleteOne({ _id: req.params.id }, (err) => {
+    if (err) {
+      res.redirect('/campgrounds')
+    } else {
+      res.redirect('/campgrounds')
+    }
+  })
+})
+
 function isLoggedIn (req, res, next) {
   if (req.isAuthenticated()) {
     return next()
